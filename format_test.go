@@ -26,8 +26,8 @@ func TestFormatNew(t *testing.T) {
 		New("error"),
 		"%+v",
 		"error\n" +
-			"github.com/pkg/errors.TestFormatNew\n" +
-			"\t.+/github.com/pkg/errors/format_test.go:26",
+			"github.com/vuuvv/errors.TestFormatNew\n" +
+			"\t.+/github.com/vuuvv/errors/format_test.go:26",
 	}, {
 		New("error"),
 		"%q",
@@ -56,8 +56,8 @@ func TestFormatErrorf(t *testing.T) {
 		Errorf("%s", "error"),
 		"%+v",
 		"error\n" +
-			"github.com/pkg/errors.TestFormatErrorf\n" +
-			"\t.+/github.com/pkg/errors/format_test.go:56",
+			"github.com/vuuvv/errors.TestFormatErrorf\n" +
+			"\t.+/github.com/vuuvv/errors/format_test.go:56",
 	}}
 
 	for i, tt := range tests {
@@ -82,8 +82,8 @@ func TestFormatWrap(t *testing.T) {
 		Wrap(New("error"), "error2"),
 		"%+v",
 		"error\n" +
-			"github.com/pkg/errors.TestFormatWrap\n" +
-			"\t.+/github.com/pkg/errors/format_test.go:82",
+			"github.com/vuuvv/errors.TestFormatWrap\n" +
+			"\t.+/github.com/vuuvv/errors/format_test.go:82",
 	}, {
 		Wrap(io.EOF, "error"),
 		"%s",
@@ -97,15 +97,15 @@ func TestFormatWrap(t *testing.T) {
 		"%+v",
 		"EOF\n" +
 			"error\n" +
-			"github.com/pkg/errors.TestFormatWrap\n" +
-			"\t.+/github.com/pkg/errors/format_test.go:96",
+			"github.com/vuuvv/errors.TestFormatWrap\n" +
+			"\t.+/github.com/vuuvv/errors/format_test.go:96",
 	}, {
 		Wrap(Wrap(io.EOF, "error1"), "error2"),
 		"%+v",
 		"EOF\n" +
 			"error1\n" +
-			"github.com/pkg/errors.TestFormatWrap\n" +
-			"\t.+/github.com/pkg/errors/format_test.go:103\n",
+			"github.com/vuuvv/errors.TestFormatWrap\n" +
+			"\t.+/github.com/vuuvv/errors/format_test.go:103\n",
 	}, {
 		Wrap(New("error with space"), "context"),
 		"%q",
@@ -135,8 +135,8 @@ func TestFormatWrapf(t *testing.T) {
 		"%+v",
 		"EOF\n" +
 			"error2\n" +
-			"github.com/pkg/errors.TestFormatWrapf\n" +
-			"\t.+/github.com/pkg/errors/format_test.go:134",
+			"github.com/vuuvv/errors.TestFormatWrapf\n" +
+			"\t.+/github.com/vuuvv/errors/format_test.go:134",
 	}, {
 		Wrapf(New("error"), "error%d", 2),
 		"%s",
@@ -149,8 +149,8 @@ func TestFormatWrapf(t *testing.T) {
 		Wrapf(New("error"), "error%d", 2),
 		"%+v",
 		"error\n" +
-			"github.com/pkg/errors.TestFormatWrapf\n" +
-			"\t.+/github.com/pkg/errors/format_test.go:149",
+			"github.com/vuuvv/errors.TestFormatWrapf\n" +
+			"\t.+/github.com/vuuvv/errors/format_test.go:149",
 	}}
 
 	for i, tt := range tests {
@@ -175,8 +175,8 @@ func TestFormatWithStack(t *testing.T) {
 		WithStack(io.EOF),
 		"%+v",
 		[]string{"EOF",
-			"github.com/pkg/errors.TestFormatWithStack\n" +
-				"\t.+/github.com/pkg/errors/format_test.go:175"},
+			"github.com/vuuvv/errors.TestFormatWithStack\n" +
+				"\t.+/github.com/vuuvv/errors/format_test.go:175"},
 	}, {
 		WithStack(New("error")),
 		"%s",
@@ -189,36 +189,36 @@ func TestFormatWithStack(t *testing.T) {
 		WithStack(New("error")),
 		"%+v",
 		[]string{"error",
-			"github.com/pkg/errors.TestFormatWithStack\n" +
-				"\t.+/github.com/pkg/errors/format_test.go:189",
-			"github.com/pkg/errors.TestFormatWithStack\n" +
-				"\t.+/github.com/pkg/errors/format_test.go:189"},
+			"github.com/vuuvv/errors.TestFormatWithStack\n" +
+				"\t.+/github.com/vuuvv/errors/format_test.go:189",
+			"github.com/vuuvv/errors.TestFormatWithStack\n" +
+				"\t.+/github.com/vuuvv/errors/format_test.go:189"},
 	}, {
 		WithStack(WithStack(io.EOF)),
 		"%+v",
 		[]string{"EOF",
-			"github.com/pkg/errors.TestFormatWithStack\n" +
-				"\t.+/github.com/pkg/errors/format_test.go:197",
-			"github.com/pkg/errors.TestFormatWithStack\n" +
-				"\t.+/github.com/pkg/errors/format_test.go:197"},
+			"github.com/vuuvv/errors.TestFormatWithStack\n" +
+				"\t.+/github.com/vuuvv/errors/format_test.go:197",
+			"github.com/vuuvv/errors.TestFormatWithStack\n" +
+				"\t.+/github.com/vuuvv/errors/format_test.go:197"},
 	}, {
 		WithStack(WithStack(Wrapf(io.EOF, "message"))),
 		"%+v",
 		[]string{"EOF",
 			"message",
-			"github.com/pkg/errors.TestFormatWithStack\n" +
-				"\t.+/github.com/pkg/errors/format_test.go:205",
-			"github.com/pkg/errors.TestFormatWithStack\n" +
-				"\t.+/github.com/pkg/errors/format_test.go:205",
-			"github.com/pkg/errors.TestFormatWithStack\n" +
-				"\t.+/github.com/pkg/errors/format_test.go:205"},
+			"github.com/vuuvv/errors.TestFormatWithStack\n" +
+				"\t.+/github.com/vuuvv/errors/format_test.go:205",
+			"github.com/vuuvv/errors.TestFormatWithStack\n" +
+				"\t.+/github.com/vuuvv/errors/format_test.go:205",
+			"github.com/vuuvv/errors.TestFormatWithStack\n" +
+				"\t.+/github.com/vuuvv/errors/format_test.go:205"},
 	}, {
 		WithStack(Errorf("error%d", 1)),
 		"%+v",
 		[]string{"error1",
-			"github.com/pkg/errors.TestFormatWithStack\n" +
-				"\t.+/github.com/pkg/errors/format_test.go:216",
-			"github.com/pkg/errors.TestFormatWithStack\n" +
+			"github.com/vuuvv/errors.TestFormatWithStack\n" +
+				"\t.+/github.com/vuuvv/errors/format_test.go:216",
+			"github.com/vuuvv/errors.TestFormatWithStack\n" +
 				"\t.+/github.com/pkg/errors/format_test.go:216"},
 	}}
 
