@@ -25,9 +25,9 @@ func TestFormatNew(t *testing.T) {
 	}, {
 		New("error"),
 		"%+v",
-		"error\n" +
+		"Caused by: github.com/vuuvv/errors.stackError: error\n" +
 			"github.com/vuuvv/errors.TestFormatNew\n" +
-			"\t.+/github.com/vuuvv/errors/format_test.go:26",
+			"\t.+/errors/format_test.go:26",
 	}, {
 		New("error"),
 		"%q",
@@ -55,9 +55,9 @@ func TestFormatErrorf(t *testing.T) {
 	}, {
 		Errorf("%s", "error"),
 		"%+v",
-		"error\n" +
+		"Caused by: github.com/vuuvv/errors.stackError: error\n" +
 			"github.com/vuuvv/errors.TestFormatErrorf\n" +
-			"\t.+/github.com/vuuvv/errors/format_test.go:56",
+			"\t.+/format_test.go:56",
 	}}
 
 	for i, tt := range tests {
@@ -73,32 +73,32 @@ func TestFormatWrap(t *testing.T) {
 	}{{
 		Wrap(New("error"), "error2"),
 		"%s",
-		"error2: error",
+		"error2",
 	}, {
 		Wrap(New("error"), "error2"),
 		"%v",
-		"error2: error",
+		"error2",
 	}, {
 		Wrap(New("error"), "error2"),
 		"%+v",
-		"error\n" +
+		"Caused by: github.com/vuuvv/errors.stackError: error2\n" +
 			"github.com/vuuvv/errors.TestFormatWrap\n" +
-			"\t.+/github.com/vuuvv/errors/format_test.go:82",
+			"\t.+/errors/format_test.go:82",
 	}, {
 		Wrap(io.EOF, "error"),
 		"%s",
-		"error: EOF",
+		"error",
 	}, {
 		Wrap(io.EOF, "error"),
 		"%v",
-		"error: EOF",
+		"error",
 	}, {
 		Wrap(io.EOF, "error"),
 		"%+v",
-		"EOF\n" +
-			"error\n" +
+		"Caused by: github.com/vuuvv/errors.stackError: error\n" +
 			"github.com/vuuvv/errors.TestFormatWrap\n" +
-			"\t.+/github.com/vuuvv/errors/format_test.go:96",
+			"\t.+/errors/format_test.go:96\n" +
+			".+Caused by: github.com/vuuvv/errors.stackError: EOF",
 	}, {
 		Wrap(Wrap(io.EOF, "error1"), "error2"),
 		"%+v",
@@ -227,86 +227,6 @@ func TestFormatWithStack(t *testing.T) {
 	}
 }
 
-func TestFormatWithMessage(t *testing.T) {
-	tests := []struct {
-		error
-		format string
-		want   []string
-	}{{
-		WithMessage(New("error"), "error2"),
-		"%s",
-		[]string{"error2: error"},
-	}, {
-		WithMessage(New("error"), "error2"),
-		"%v",
-		[]string{"error2: error"},
-	}, {
-		WithMessage(New("error"), "error2"),
-		"%+v",
-		[]string{
-			"error",
-			"github.com/pkg/errors.TestFormatWithMessage\n" +
-				"\t.+/github.com/pkg/errors/format_test.go:244",
-			"error2"},
-	}, {
-		WithMessage(io.EOF, "addition1"),
-		"%s",
-		[]string{"addition1: EOF"},
-	}, {
-		WithMessage(io.EOF, "addition1"),
-		"%v",
-		[]string{"addition1: EOF"},
-	}, {
-		WithMessage(io.EOF, "addition1"),
-		"%+v",
-		[]string{"EOF", "addition1"},
-	}, {
-		WithMessage(WithMessage(io.EOF, "addition1"), "addition2"),
-		"%v",
-		[]string{"addition2: addition1: EOF"},
-	}, {
-		WithMessage(WithMessage(io.EOF, "addition1"), "addition2"),
-		"%+v",
-		[]string{"EOF", "addition1", "addition2"},
-	}, {
-		Wrap(WithMessage(io.EOF, "error1"), "error2"),
-		"%+v",
-		[]string{"EOF", "error1", "error2",
-			"github.com/pkg/errors.TestFormatWithMessage\n" +
-				"\t.+/github.com/pkg/errors/format_test.go:272"},
-	}, {
-		WithMessage(Errorf("error%d", 1), "error2"),
-		"%+v",
-		[]string{"error1",
-			"github.com/pkg/errors.TestFormatWithMessage\n" +
-				"\t.+/github.com/pkg/errors/format_test.go:278",
-			"error2"},
-	}, {
-		WithMessage(WithStack(io.EOF), "error"),
-		"%+v",
-		[]string{
-			"EOF",
-			"github.com/pkg/errors.TestFormatWithMessage\n" +
-				"\t.+/github.com/pkg/errors/format_test.go:285",
-			"error"},
-	}, {
-		WithMessage(Wrap(WithStack(io.EOF), "inside-error"), "outside-error"),
-		"%+v",
-		[]string{
-			"EOF",
-			"github.com/pkg/errors.TestFormatWithMessage\n" +
-				"\t.+/github.com/pkg/errors/format_test.go:293",
-			"inside-error",
-			"github.com/pkg/errors.TestFormatWithMessage\n" +
-				"\t.+/github.com/pkg/errors/format_test.go:293",
-			"outside-error"},
-	}}
-
-	for i, tt := range tests {
-		testFormatCompleteCompare(t, i, tt.error, tt.format, tt.want, true)
-	}
-}
-
 func TestFormatGeneric(t *testing.T) {
 	starts := []struct {
 		err  error
@@ -327,9 +247,6 @@ func TestFormatGeneric(t *testing.T) {
 
 	wrappers := []wrapper{
 		{
-			func(err error) error { return WithMessage(err, "with-message") },
-			[]string{"with-message"},
-		}, {
 			func(err error) error { return WithStack(err) },
 			[]string{
 				"github.com/pkg/errors.(func·002|TestFormatGeneric.func2)\n\t" +

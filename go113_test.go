@@ -1,3 +1,4 @@
+//go:build go1.13
 // +build go1.13
 
 package errors
@@ -33,22 +34,6 @@ func TestIs(t *testing.T) {
 			name: "with stack",
 			args: args{
 				err:    WithStack(err),
-				target: err,
-			},
-			want: true,
-		},
-		{
-			name: "with message",
-			args: args{
-				err:    WithMessage(err, "test"),
-				target: err,
-			},
-			want: true,
-		},
-		{
-			name: "with message format",
-			args: args{
-				err:    WithMessagef(err, "%s", "test"),
 				target: err,
 			},
 			want: true,
@@ -98,22 +83,6 @@ func TestAs(t *testing.T) {
 			want: true,
 		},
 		{
-			name: "with message",
-			args: args{
-				err:    WithMessage(err, "test"),
-				target: new(customErr),
-			},
-			want: true,
-		},
-		{
-			name: "with message format",
-			args: args{
-				err:    WithMessagef(err, "%s", "test"),
-				target: new(customErr),
-			},
-			want: true,
-		},
-		{
 			name: "std errors compatibility",
 			args: args{
 				err:    fmt.Errorf("wrap it: %w", err),
@@ -150,16 +119,6 @@ func TestUnwrap(t *testing.T) {
 		{
 			name: "with stack",
 			args: args{err: WithStack(err)},
-			want: err,
-		},
-		{
-			name: "with message",
-			args: args{err: WithMessage(err, "test")},
-			want: err,
-		},
-		{
-			name: "with message format",
-			args: args{err: WithMessagef(err, "%s", "test")},
 			want: err,
 		},
 		{

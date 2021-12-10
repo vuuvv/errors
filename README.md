@@ -1,6 +1,11 @@
-# errors [![Travis-CI](https://travis-ci.org/pkg/errors.svg)](https://travis-ci.org/pkg/errors) [![AppVeyor](https://ci.appveyor.com/api/projects/status/b98mptawhudj53ep/branch/master?svg=true)](https://ci.appveyor.com/project/davecheney/errors/branch/master) [![GoDoc](https://godoc.org/github.com/vuuvv/errors?status.svg)](http://godoc.org/github.com/vuuvv/errors) [![Report card](https://goreportcard.com/badge/github.com/vuuvv/errors)](https://goreportcard.com/report/github.com/vuuvv/errors) [![Sourcegraph](https://sourcegraph.com/github.com/vuuvv/errors/-/badge.svg)](https://sourcegraph.com/github.com/vuuvv/errors?badge)
+# errors [![Travis-CI](https://travis-ci.org/vuuvv/errors.svg)](https://travis-ci.org/vuuvv/errors) [![AppVeyor](https://ci.appveyor.com/api/projects/status/b98mptawhudj53ep/branch/master?svg=true)](https://ci.appveyor.com/project/davecheney/errors/branch/master) [![GoDoc](https://godoc.org/github.com/vuuvv/errors?status.svg)](http://godoc.org/github.com/vuuvv/errors) [![Report card](https://goreportcard.com/badge/github.com/vuuvv/errors)](https://goreportcard.com/report/github.com/vuuvv/errors) [![Sourcegraph](https://sourcegraph.com/github.com/vuuvv/errors/-/badge.svg)](https://sourcegraph.com/github.com/vuuvv/errors?badge)
 
 This repository is cloned from github.com/pkg/errors
+
+## Main change
+
+* WithStack only stack error when error is not stacked
+* Format stack trace pretty
 
 Package errors provides simple error handling primitives.
 
