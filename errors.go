@@ -98,6 +98,8 @@ import (
 	"reflect"
 )
 
+const DefaultSkip = 3
+
 type causer interface {
 	Cause() error
 }
@@ -177,7 +179,14 @@ func (this *stackError) Format(s fmt.State, verb rune) {
 func New(message string) error {
 	return &stackError{
 		msg:   message,
-		stack: callers(),
+		stack: callers(DefaultSkip),
+	}
+}
+
+func NewAndSkip(message string, skip int) error {
+	return &stackError{
+		msg:   message,
+		stack: callers(DefaultSkip + skip),
 	}
 }
 
@@ -187,7 +196,7 @@ func New(message string) error {
 func Errorf(format string, args ...interface{}) error {
 	return &stackError{
 		msg:   fmt.Sprintf(format, args...),
-		stack: callers(),
+		stack: callers(DefaultSkip),
 	}
 }
 
@@ -206,7 +215,23 @@ func WithStack(err error) error {
 	return &stackError{
 		msg:   "",
 		cause: err,
-		stack: callers(),
+		stack: callers(DefaultSkip),
+	}
+}
+
+func WithStackAndSkip(err error, skip int) error {
+	if err == nil {
+		return nil
+	}
+
+	if _, ok := err.(stackTracer); ok {
+		return err
+	}
+
+	return &stackError{
+		msg:   "",
+		cause: err,
+		stack: callers(DefaultSkip + skip),
 	}
 }
 
@@ -220,7 +245,18 @@ func Wrap(err error, message string) error {
 	return &stackError{
 		msg:   message,
 		cause: err,
-		stack: callers(),
+		stack: callers(DefaultSkip),
+	}
+}
+
+func WrapAndSkip(err error, message string, skip int) error {
+	if err == nil {
+		return nil
+	}
+	return &stackError{
+		msg:   message,
+		cause: err,
+		stack: callers(DefaultSkip + skip),
 	}
 }
 
@@ -234,7 +270,7 @@ func Wrapf(err error, format string, args ...interface{}) error {
 	return &stackError{
 		msg:   fmt.Sprintf(format, args...),
 		cause: err,
-		stack: callers(),
+		stack: callers(DefaultSkip),
 	}
 }
 

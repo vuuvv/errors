@@ -253,7 +253,10 @@ func caller() Frame {
 func TestSimple(t *testing.T) {
 	err := errors.New("abc")
 	sErr := WithStack(err)
+	wErr := Wrap(sErr, "ddd")
 	t.Logf("%+v", sErr)
 	t.Logf("=========================")
-	t.Logf("%+v", Wrap(sErr, "ddd"))
+	t.Logf("%+v", wErr)
+	t.Logf("=========================")
+	t.Logf("%+v", Wrap(wErr, "eee"))
 }
