@@ -137,6 +137,9 @@ func (this *stackError) verbose(s fmt.State, verb rune) {
 		sErr, ok := err.(*stackError)
 		if ok {
 			sErr.stack.Format(s, verb)
+			if sErr.msg == "" {
+				err = sErr.cause
+			}
 		}
 
 		c, ok := err.(causer)

@@ -1,6 +1,7 @@
 package errors
 
 import (
+	"errors"
 	"fmt"
 	"runtime"
 	"testing"
@@ -247,4 +248,12 @@ func caller() Frame {
 	frames := runtime.CallersFrames(pcs[:n])
 	frame, _ := frames.Next()
 	return Frame(frame.PC)
+}
+
+func TestSimple(t *testing.T) {
+	err := errors.New("abc")
+	sErr := WithStack(err)
+	t.Logf("%+v", sErr)
+	t.Logf("=========================")
+	t.Logf("%+v", Wrap(sErr, "ddd"))
 }
