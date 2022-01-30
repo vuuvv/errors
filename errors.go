@@ -200,6 +200,11 @@ func Errorf(format string, args ...interface{}) error {
 	}
 }
 
+func HasStack(err error) (ok bool) {
+	_, ok = err.(stackTracer)
+	return ok
+}
+
 // WithStack annotates err with a stack trace at the point WithStack was called.
 // If err is nil, WithStack returns nil.
 // If err is stacked, WithStack returns origin err.
