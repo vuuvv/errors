@@ -105,7 +105,7 @@ type causer interface {
 }
 
 type stackTracer interface {
-	StackTracer() StackTrace
+	StackTrace() StackTrace
 }
 
 type stackError struct {

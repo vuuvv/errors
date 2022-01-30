@@ -190,3 +190,11 @@ func TestErrorEquality(t *testing.T) {
 		}
 	}
 }
+
+func TestHasStack(t *testing.T) {
+	err := New("test")
+
+	if !HasStack(err) {
+		t.Errorf("should has stack")
+	}
+}
